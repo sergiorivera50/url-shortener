@@ -1,6 +1,5 @@
 import styles from './page.module.css';
-import crypto from 'crypto';
-import { createURLBinding, run } from '../utils/prisma';
+import { createURLBinding } from '../utils/prisma';
 
 export default function Page() {
   async function create(formData: FormData): Promise<void> {
