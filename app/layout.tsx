@@ -2,6 +2,7 @@ import { NextFont } from 'next/dist/compiled/@next/font';
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { Metadata } from 'next';
+import ReactQueryProvider from '../components/ReactQueryProvider';
 
 const inter: NextFont = Inter({ subsets: ['latin'] });
 
@@ -12,8 +13,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-    <body className={inter.className}>{children}</body>
-    </html>
+    <ReactQueryProvider>
+      <html lang="en">
+      <body className={inter.className}>{children}</body>
+      </html>
+    </ReactQueryProvider>
   );
 }

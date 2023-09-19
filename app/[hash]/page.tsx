@@ -1,24 +1,26 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { redirect } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Page({ params }) {
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchURL = async (): Promise<string> => {
+  const { data, isError } = useQuery({
+    retry: false,
+    queryKey: ['hash', params.hash],
+    queryFn: async () => {
       const response = await fetch(`api/binding/${params.hash}`);
-
       if (!response.ok) {
-        return '/';
+        throw new Error('Unable to fetch URL binding');
       }
+      return await response.json();
+    },
+  });
 
-      const data = await response.json();
-      return data['url'];
-    };
+  if (isError) {
+    redirect('/');
+  }
 
-    fetchURL()
-      .then(url => router.push(url));
-  }, []);
+  if (data) {
+    redirect(data.url);
+  }
 }
