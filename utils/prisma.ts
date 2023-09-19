@@ -39,5 +39,7 @@ export async function fetchLongURL(hash: string): Promise<string> {
       },
     });
   });
+  if (binding === null)
+    throw new Error(`Could not find binding for hash ${hash}`);
   return binding.longURL;
 }

@@ -1,12 +1,24 @@
-import { redirect } from 'next/navigation';
-import { fetchLongURL } from '../../utils/prisma';
+'use client';
 
-export default async function Page({ params }) {
-  const url = await fetchLongURL(params['hash']);
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-  if (url === undefined) {
-    redirect('/');
-  } else {
-    redirect(url);
-  }
+export default function Page({ params }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchURL = async (): Promise<string> => {
+      const response = await fetch(`api/binding/${params.hash}`);
+
+      if (!response.ok) {
+        return '/';
+      }
+
+      const data = await response.json();
+      return data['url'];
+    };
+
+    fetchURL()
+      .then(url => router.push(url));
+  }, []);
 }

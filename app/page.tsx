@@ -1,21 +1,31 @@
+'use client';
 import styles from './page.module.css';
-import { createURLBinding } from '../utils/prisma';
+import { useRef } from 'react';
 
 export default function Page() {
-  async function create(formData: FormData): Promise<void> {
-    'use server';
+  const urlRef = useRef(null);
 
-    const longURL: string = formData.get('url').toString();
-    const shortURL: string = await createURLBinding(longURL);
-    console.log(`New URL binding created: ${shortURL} => ${longURL}`);
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch(
+      'api/binding/new',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url: urlRef.current.value }),
+      },
+    );
+    console.log(await response.json());
+  };
 
   return (
     <main className={styles.main}>
-      <form className={styles.form} action={create}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <label htmlFor="url">Shorten my URL! ✨</label>
         <div className={styles.action}>
-          <input id="url" name="url" type="url" />
+          <input id="url" type="url" ref={urlRef} />
           <button className={styles.submit}>Submit</button>
         </div>
       </form>
