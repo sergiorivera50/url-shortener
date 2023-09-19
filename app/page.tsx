@@ -39,7 +39,7 @@ export default function Page() {
           <a
             style={{ textAlign: 'center', textDecoration: 'underline', color: 'blue' }}
             target="_blank"
-            href={binding['longURL']}
+            href={`${host}/${binding['shortURL']}`}
           >{host}/{binding['shortURL']}</a>
         ) : (
           <div className={styles.action}>
