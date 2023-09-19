@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { fetchLongURL } from '../../utils/mongo';
+import { fetchLongURL } from '../../utils/prisma';
 
 export default async function Page({ params }) {
   const url = await fetchLongURL(params['hash']);
