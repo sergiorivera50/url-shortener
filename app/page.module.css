@@ -21,6 +21,9 @@
     background: -webkit-linear-gradient(0.25turn, #3c5cdc, #9198e5);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .action {
