@@ -1,9 +1,10 @@
 'use client';
 import styles from './page.module.css';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 export default function Page() {
   const urlRef = useRef(null);
+  const [binding, setBinding] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,17 +18,28 @@ export default function Page() {
         body: JSON.stringify({ url: urlRef.current.value }),
       },
     );
-    console.log(await response.json());
+    const data = await response.json();
+    setBinding(data['binding']);
   };
+
+  const host = 'http://localhost:3000/';
 
   return (
     <main className={styles.main}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <label htmlFor="url">Shorten my URL! ✨</label>
-        <div className={styles.action}>
-          <input id="url" type="url" ref={urlRef} />
-          <button className={styles.submit}>Submit</button>
-        </div>
+        {binding ? (
+          <a
+            style={{ textAlign: 'center', textDecoration: 'underline', color: 'blue' }}
+            target="_blank"
+            href={binding['longURL']}
+          >{host}{binding['shortURL']}</a>
+        ) : (
+          <div className={styles.action}>
+            <input id="url" type="url" ref={urlRef} />
+            <button className={styles.submit}>Submit</button>
+          </div>
+        )}
       </form>
     </main>
   );
